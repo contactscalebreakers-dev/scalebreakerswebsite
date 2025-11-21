@@ -7,7 +7,10 @@ import { fileURLToPath } from "node:url";
 import { createServer as createViteServer } from "vite";
 import viteConfig from "../../vite.config";
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+// Safe __dirname for bundled environments (esbuild makes import.meta.url undefined)
+const __dirname = import.meta.url 
+  ? path.dirname(fileURLToPath(import.meta.url))
+  : process.cwd();
 
 export async function setupVite(app: Express, server: Server) {
   const serverOptions = {
