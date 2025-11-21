@@ -34,7 +34,9 @@ function validateEnv() {
   
   if (errors.length > 0) {
     console.error("[ENV] Configuration errors:");
-    errors.forEach(error => console.error(`  - ${error}`));
+    for (const error of errors) {
+      console.error(`  - ${error}`);
+    }
     throw new Error("Environment validation failed. Check logs above.");
   }
   
@@ -54,5 +56,5 @@ export const ENV = {
   isDevelopment: process.env.NODE_ENV === "development",
   forgeApiUrl: getEnvVar("BUILT_IN_FORGE_API_URL", false, ""),
   forgeApiKey: getEnvVar("BUILT_IN_FORGE_API_KEY", false, ""),
-  port: parseInt(getEnvVar("PORT", false, "3000"), 10),
+  port: Number.parseInt(getEnvVar("PORT", false, "3000"), 10),
 } as const;

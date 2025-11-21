@@ -20,7 +20,7 @@ export const passwordSchema = z
   .max(128, "Password must not exceed 128 characters")
   .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
   .regex(/[a-z]/, "Password must contain at least one lowercase letter")
-  .regex(/[0-9]/, "Password must contain at least one number");
+  .regex(/\d/, "Password must contain at least one number");
 
 // UUID validation
 export const uuidSchema = z
@@ -85,8 +85,8 @@ export const paginationSchema = z.object({
  */
 
 // Remove HTML tags from string (prevent XSS)
-export function stripHtml(str: string): string {
-  return str.replace(/<[^>]*>/g, "");
+export function stripTags(str: string): string {
+  return str.replaceAll(/<[^>]*>/g, "");
 }
 
 // Escape HTML special characters
@@ -105,7 +105,7 @@ export function escapeHtml(str: string): string {
 
 // Validate and sanitize user input
 export function sanitizeUserInput(input: string, maxLength = 5000): string {
-  return stripHtml(input).trim().slice(0, maxLength);
+  return stripTags(input).trim().slice(0, maxLength);
 }
 
 /**
@@ -138,8 +138,8 @@ export function isString(value: unknown): value is string {
   return typeof value === "string";
 }
 
-export function isNumber(value: unknown): value is number {
-  return typeof value === "number" && !isNaN(value);
+export function isValidNumber(value: unknown): value is number {
+  return typeof value === "number" && !Number.isNaN(value);
 }
 
 export function isBoolean(value: unknown): value is boolean {

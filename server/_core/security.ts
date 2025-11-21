@@ -106,13 +106,13 @@ export function sanitizeInput(req: Request, res: Response, next: NextFunction): 
 
 function sanitizeString(str: string): string {
   // Remove null bytes
-  return str.replace(/\0/g, "");
+  return str.replaceAll(/\0/g, "");
 }
 
 function sanitizeObject(obj: Record<string, unknown>): void {
   for (const key in obj) {
     if (typeof obj[key] === "string") {
-      obj[key] = sanitizeString(obj[key] as string);
+      obj[key] = sanitizeString(obj[key]);
     } else if (obj[key] && typeof obj[key] === "object") {
       sanitizeObject(obj[key] as Record<string, unknown>);
     }
